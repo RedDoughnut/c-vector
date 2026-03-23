@@ -1,5 +1,5 @@
 # c-vector
-A vector implementation in C, inspired by C++'s `std::vector`
+A vector implementation in C, inspired by C++'s `std::vector` (this one is integer only)
 
 Includes an example in main function
 
