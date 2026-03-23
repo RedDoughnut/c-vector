@@ -13,7 +13,7 @@ Functions:
 - `v_clear(vector* self)` - Clears the vector elements
 - `v_reserve(vector* self, size_t n)` - Preallocates memory for at least n elements without changing the size
   
-Compile and execute with:
+Compile and execute with: (Linux)
 ```
 gcc vector.c -o vector && ./vector
 ```
