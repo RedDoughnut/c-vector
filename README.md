@@ -1,5 +1,6 @@
 # c-vector
-A vector implementation in C, inspired by C++'s std::vector"
+A vector implementation in C, inspired by C++'s `std::vector`
+
 Includes an example in main function
 Functions:
 - `v_construct()` - Constructs an empty vector
