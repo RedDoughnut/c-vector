@@ -54,9 +54,9 @@ void v_pop_back(vector* self){
     }
 }
 /*
-Returns a int pointer to the element on index `pos`
+Returns an int pointer to the element on index `pos`
 */
-int* v_at(vector* self, int pos){
+int* v_at(vector* self, size_t pos){
     return (*self).arr + pos;
 }
 /*
@@ -83,7 +83,7 @@ void v_clear(vector* self){
 /*
 Preallocates memory for at least n elements without changing the size
 */
-void v_reserve(vector* self, int n){
+void v_reserve(vector* self, size_t n){
     (*self).capacity = pow(2, ceil(log2(n)));
     int* noviarr = malloc((*self).capacity * sizeof(int));
     if((*self).arr != NULL){
