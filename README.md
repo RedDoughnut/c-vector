@@ -1,5 +1,5 @@
 # c-vector
-C++ vector written purely in C
+A vector implementation in C, inspired by C++'s std::vector"
 Includes an example in main function
 Functions:
 - `v_construct()` - Constructs an empty vector
@@ -13,5 +13,5 @@ Functions:
   
 Compile and execute with:
 ```
-gcc -lm vector.c -o vector && ./vector
+gcc vector.c -o vector && ./vector
 ```
