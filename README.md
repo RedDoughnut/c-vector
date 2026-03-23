@@ -2,6 +2,7 @@
 A vector implementation in C, inspired by C++'s `std::vector`
 
 Includes an example in main function
+
 Functions:
 - `v_construct()` - Constructs an empty vector
 - `v_push_back(vector* self, int val)` - Adds an element to the end of the vector
