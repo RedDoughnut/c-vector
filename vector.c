@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
 typedef struct vector{
     int* arr;
@@ -14,8 +13,7 @@ vector v_construct(){
     vector self;
     (self).size = 0;
     (self).capacity = 0;
-    void* vdptr = NULL;
-    (self).arr = vdptr;
+    (self).arr = NULL;
     return self;
 }
 /*
@@ -26,14 +24,19 @@ void v_push_back(vector* self, int val){
         (*self).capacity *= 2;
         if((*self).capacity==0)
             (*self).capacity = 1;
-        int* noviarr = malloc((*self).capacity * sizeof(int));
+        int* newarr = malloc((*self).capacity * sizeof(int));
+        if(!newarr) {
+            fprintf(stderr, "vector: allocation failed\n");
+            exit(1);
+        }
         if((*self).arr != NULL){
-            for(int i=0;i<(*self).size;i++){
-                noviarr[i] = (*self).arr[i];
+            for(size_t i=0;i<(*self).size;i++){
+                newarr[i] = (*self).arr[i];
             }
         }
-        noviarr[(*self).size] = val;
-        (*self).arr = noviarr;
+        newarr[(*self).size] = val;
+        free((*self).arr);
+        (*self).arr = newarr;
     }
     else{
         (*self).arr[(*self).size] = val;
@@ -57,13 +60,17 @@ void v_pop_back(vector* self){
 Returns an int pointer to the element on index `pos`
 */
 int* v_at(vector* self, size_t pos){
+    if(pos >= (*self).size) {
+        fprintf(stderr, "vector: at: index out of bounds\n");
+        exit(1);
+    }
     return (*self).arr + pos;
 }
 /*
 Prints out the vector elements with printf
 */
 void v_print(vector* self){
-    for(int i=0;i<(*self).size;i++){
+    for(size_t i=0;i<(*self).size;i++){
         printf("%d ", (*self).arr[i]);
     }
     printf("\n");
@@ -84,14 +91,21 @@ void v_clear(vector* self){
 Preallocates memory for at least n elements without changing the size
 */
 void v_reserve(vector* self, size_t n){
-    (*self).capacity = pow(2, ceil(log2(n)));
-    int* noviarr = malloc((*self).capacity * sizeof(int));
+    if(n <= (*self).capacity) return;
+    (*self).capacity = 1;
+    while((*self).capacity < n) (*self).capacity <<= 1;
+    int* newarr = malloc((*self).capacity * sizeof(int));
+    if(!newarr) {
+        fprintf(stderr, "vector: allocation failed\n");
+        exit(1);
+    }
     if((*self).arr != NULL){
-        for(int i=0;i<(*self).size;i++){
-            noviarr[i] = (*self).arr[i];
+        for(size_t i=0;i<(*self).size;i++){
+            newarr[i] = (*self).arr[i];
         }
     }
-    (*self).arr = noviarr;
+    free((*self).arr);
+    (*self).arr = newarr;
 }
 int main(){
     vector v = v_construct();
