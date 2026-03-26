@@ -6,6 +6,63 @@ typedef struct vector{
     size_t size;
     size_t capacity;
 } vector;
+
+void swap(int* a, int* b){
+    int c = *a;
+    *a = *b;
+    *b = c;
+}
+
+int cmp(const int* a, const int* b){
+    return *a < *b;
+}
+/*
+Helper function for merge sort
+*/
+int* merge(int* l, int* r, int ls, int rs, int (*comp)(const int*, const int*)){
+    int* arr = malloc((ls + rs) * sizeof(int));
+    int li = 0;
+    int ri = 0;
+    while(li<ls || ri<rs){
+        if(li != ls && (comp(&l[li], &r[ri]) || ri==rs)){
+            arr[li+ri] = l[li];
+            li++;
+        }
+        else{
+            arr[li+ri] = r[ri];
+            ri++;
+        }
+    }
+    free(l);
+    free(r);
+    return arr;
+}
+/*
+Helper function for merge sort
+*/
+int* split(int* arr, int s, int (*comp)(const int*, const int*)){
+    if(s==2){
+        if(!comp(&arr[0], &arr[1]))
+            swap(&arr[0], &arr[1]);
+        return arr;
+    }
+    if(s==1)
+        return arr;
+    int* l = malloc(s / 2 * sizeof(int));
+    int* r = malloc((s - s / 2) * sizeof(int));
+    for(int i=0;i<s/2;i++)
+        l[i] = arr[i];
+    for(int i=0;i<s-s/2;i++)
+        r[i] = arr[i + s/2];
+    free(arr);
+    return merge(split(l, s/2, comp), split(r, s-s/2, comp), s/2, s-s/2, comp);
+}
+/*
+Sorts the vector elements using merge sort with given comparison function
+*/
+void v_sort(vector* self, int (*comp)(const int*, const int*)){
+    (*self).arr = split((*self).arr, (*self).size, comp);
+}
 /*
 Constructs an empty vector
 */
@@ -109,7 +166,6 @@ void v_reserve(vector* self, size_t n){
 }
 int main(){
     vector v = v_construct();
-
     v_reserve(&v, 4);
     
     v_push_back(&v, 1);
@@ -124,6 +180,17 @@ int main(){
     v_push_back(&v, 10);
     v_push_back(&v, 20);
     v_print(&v); // Should print: 10 20
+
+    v_destroy(&v);
+
+    v = v_construct();
+    v_push_back(&v, 50);
+    v_push_back(&v, 40);
+    v_push_back(&v, 30);
+    v_push_back(&v, 20);
+    v_push_back(&v, 10);
+    v_sort(&v, cmp);
+    v_print(&v); // Should print: 10 20 30 40 50
 
     v_destroy(&v);
 }
