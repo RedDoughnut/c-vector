@@ -12,7 +12,7 @@ Functions:
 - `v_destroy(vector* self)` - Free the memory the vector allocated
 - `v_clear(vector* self)` - Clears the vector elements
 - `v_reserve(vector* self, size_t n)` - Preallocates memory for at least n elements without changing the size
-  
+- `v_sort(vector* self, int (*comp)(const int*, const int*))` - Sorts the vector elements using merge sort with given comparison function
 Compile and execute with: (Linux)
 ```
 gcc vector.c -o vector && ./vector
